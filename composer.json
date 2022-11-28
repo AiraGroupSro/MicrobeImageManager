@@ -1,0 +1,42 @@
+{
+    "name":        "airagroupsro/microbe-image-manager",
+    "type":        "library",
+    "description": "Support for image resizing, cropping and encrypting for Microbe.",
+    "keywords":    [
+        "php",
+        "image",
+        "resize",
+        "crop",
+        "encrypt"
+    ],
+    "homepage":    "https://github.com/AiraGroupSro/MicrobeImageManager",
+    "license":     "MIT",
+
+    "authors": [
+        {
+            "name": "Werner Dweight",
+            "email": "wd@wernerdweight.com"
+        },
+        {
+            "name": "Michal Kumžák",
+            "email": "michal.kumzak@aira.cz"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.5.9",
+        "airagroupsro/image-manager": "~1.0"
+    },
+
+    "require-dev": {},
+
+    "suggest": {
+        "airagroupsro/microbe": "~1.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "AiraGroupSro\\MicrobeImageManager\\": ""
+        }
+    }
+}
