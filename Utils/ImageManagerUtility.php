@@ -47,11 +47,11 @@ class ImageManagerUtility
                         /// if resize dimensions are wider crop original height
                         if($resizeRatio > $originalRatio){
                             $newWidth = $this->processedImageBag->getOriginalWidth();
-                            $newHeight = $this->processedImageBag->getOriginalHeight() * ($originalRatio / $resizeRatio);
+                            $newHeight = round($this->processedImageBag->getOriginalHeight() * ($originalRatio / $resizeRatio));
                         }
                         /// if resize dimensions are taller crop original width
                         else{
-                            $newWidth = $this->processedImageBag->getOriginalWidth() * ($resizeRatio / $originalRatio);
+                            $newWidth = round($this->processedImageBag->getOriginalWidth() * ($resizeRatio / $originalRatio));
                             $newHeight = $this->processedImageBag->getOriginalHeight();
                         }
                         $this->im->crop($newWidth,$newHeight);
@@ -105,7 +105,6 @@ class ImageManagerUtility
     public function processImage(UploadedFile $photoFile, $destinationFilename, $customPath = null)
     {
         $this->preparePaths($destinationFilename,$photoFile,$customPath);
-
         try {
             /// move file to temporary destination
             $photoFile->move($this->uploadRoot.DIRECTORY_SEPARATOR.$this->uploadPath.$this->customPath,$this->destinationFilename.'.'.$photoFile->getExtension());

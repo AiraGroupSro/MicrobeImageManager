@@ -2,12 +2,23 @@
 
 namespace AiraGroupSro\MicrobeImageManager\File;
 
-class UploadedFile extends \SplFileInfo
+use SplFileInfo;
+
+class UploadedFile extends SplFileInfo
 {
 	protected $originalName;
 	protected $mimeType;
 
-	protected function getMimeType(){
+	public function __construct($path,$originalName,$mimeType = null)
+	{
+		parent::__construct($path);
+
+		$this->originalName = $this->getFilename($originalName);
+		$this->mimeType = $mimeType ? $mimeType : $this->getMimeType();
+	}
+
+	protected function getMimeType(): false|string
+	{
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$mimeType = finfo_file($finfo,$this->getPathname());
 		finfo_close($finfo);
@@ -15,29 +26,26 @@ class UploadedFile extends \SplFileInfo
 		return $mimeType;
 	}
 
-	public function getFilename($filename = null){
+	public function getFilename($filename = null): string
+	{
 		/// remove slashes from the (temporary) filename
 		$originalName = str_replace('\\','/',$filename);
 		$pos = strrpos($originalName,'/');
-		return (false === $pos ? $originalName : substr($originalName,$pos+1));
+		return (false === $pos ? $originalName : mb_substr($originalName,$pos+1));
 	}
 
-	public function __construct($path,$originalName,$mimeType = null){
-		parent::__construct($path);
-
-		$this->originalName = $this->getFilename($originalName);
-		$this->mimeType = $mimeType ? $mimeType : $this->getMimeType();
-	}
-
-	public function getExtension(){
+	public function getExtension(): string
+	{
 		return strtolower(pathinfo($this->getClientOriginalName(),PATHINFO_EXTENSION));
 	}
 
-	public function getClientOriginalName(){
+	public function getClientOriginalName(): string
+	{
 		return $this->originalName;
 	}
 
-	public function move($destination,$filename){
+	public function move($destination,$filename): string
+	{
 		/// check that file actually exists
 		if(!is_uploaded_file($this->getPathname())){
 			throw new \Exception('File couldn\'t be uploaded!');
